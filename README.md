@@ -22,7 +22,7 @@ Test task for position frontend-developer: Hacker News App.
 `npm start`
 host: http://localhost:3000.
 
-## Tecknologies
+## Technologies
 
 - react
 - redux-toolkit
