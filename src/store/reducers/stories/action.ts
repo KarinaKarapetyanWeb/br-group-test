@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosInstance } from "axios";
-import { ApiRoute, BACKEND_URL, MAX_STORIES_COUNT } from "../../../const";
+import { AxiosInstance } from "axios";
+import { ApiRoute, MAX_STORIES_COUNT } from "../../../const";
 import { Stories, StoriesIds } from "../../../types/stories";
 import { AppDispatch, State } from "../../../types/state";
 import { fetchStory } from "../story/action";
