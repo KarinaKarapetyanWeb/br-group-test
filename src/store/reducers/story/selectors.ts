@@ -20,12 +20,3 @@ export const getCommentsLoading = (state: State): boolean =>
 
 export const getCommentsError = (state: State): boolean =>
   state[NameSpace.Story].isCommentsError;
-
-export const getInnerComments = (state: State): Comments =>
-  state[NameSpace.Story].innerComments;
-
-export const getInnerCommentsLoading = (state: State): boolean =>
-  state[NameSpace.Story].isInnerCommentsLoading;
-
-export const getInnerCommentsError = (state: State): boolean =>
-  state[NameSpace.Story].isInnerCommentsError;

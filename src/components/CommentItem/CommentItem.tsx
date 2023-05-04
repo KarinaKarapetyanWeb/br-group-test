@@ -1,35 +1,46 @@
-import React, { SetStateAction } from "react";
-import he from "he";
+import React, { useState } from "react";
 import { Typography } from "antd";
-import useAppSelector from "../../hooks/useAppSelector";
-import { useActions } from "../../hooks/useActions";
-import {
-  getInnerComments,
-  getInnerCommentsError,
-  getInnerCommentsLoading,
-} from "../../store/reducers/story/selectors";
-import { Comment } from "../../types/comment";
+import { Comment, Comments } from "../../types/comment";
 import styles from "./CommentItem.module.scss";
 import Loader from "../Common/Loader/Loader";
 import ErrorMessage from "../Common/ErrorMessage/ErrorMessage";
+import axios from "axios";
+import { BACKEND_URL } from "../../const";
 
 const { Text, Paragraph, Link } = Typography;
 
 interface CommentItemProps {
   comment: Comment;
-  activeCommentId: number;
-  setActiveCommentId: React.Dispatch<SetStateAction<number>>;
 }
 
 const CommentItem: React.FunctionComponent<CommentItemProps> = ({
   comment,
-  activeCommentId,
-  setActiveCommentId,
 }) => {
-  const { fetchInnerComments } = useActions();
-  const innerComments = useAppSelector(getInnerComments);
-  const isInnerCommentsLoading = useAppSelector(getInnerCommentsLoading);
-  const isInnerCommentsError = useAppSelector(getInnerCommentsError);
+  const [activeCommentId, setActiveCommentId] = useState(0);
+  const [comments, setComments] = useState<Comments>([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+  const [isCommentsError, setIsCommentsError] = useState(false);
+
+  const fetchInnerComments = async (ids: number[]) => {
+    try {
+      setIsCommentsLoading(true);
+      setIsCommentsError(false);
+      const results = await Promise.all(
+        ids.map(async (id: number) => {
+          const res = await axios.get(`${BACKEND_URL}/item/${id}.json`);
+          console.log(res.data);
+          return res.data;
+        })
+      );
+
+      setComments(results);
+    } catch {
+      setIsCommentsError(true);
+      setIsCommentsLoading(false);
+    } finally {
+      setIsCommentsLoading(false);
+    }
+  };
 
   const handleShowAnswersClick = (
     evt: React.SyntheticEvent<HTMLElement>,
@@ -42,14 +53,12 @@ const CommentItem: React.FunctionComponent<CommentItemProps> = ({
   };
 
   const showInnerComments =
-    !isInnerCommentsLoading &&
-    !isInnerCommentsError &&
-    innerComments.length !== 0;
+    !isCommentsLoading && !isCommentsError && comments.length !== 0;
 
   return (
     <div key={comment.id}>
       <Paragraph className={styles.comment}>
-        {he.encode(comment.text)}
+        {comment.text}
         <span className={styles.info}>
           <Text italic strong>
             {comment.by}
@@ -71,19 +80,13 @@ const CommentItem: React.FunctionComponent<CommentItemProps> = ({
 
       {activeCommentId === comment.id && (
         <div className={styles.innerComments}>
-          {isInnerCommentsLoading && <Loader />}
-          {isInnerCommentsError && (
+          {isCommentsLoading && <Loader />}
+          {isCommentsError && (
             <ErrorMessage text="Some error have occured while loading comments." />
           )}
           {showInnerComments &&
-            innerComments.map((comment: Comment) => (
-              <Paragraph key={comment.id} className={styles.innerComment}>
-                {he.encode(comment.text)}
-                <br />
-                <Text italic strong>
-                  {comment.by}
-                </Text>
-              </Paragraph>
+            comments.map((comment: Comment) => (
+              <CommentItem comment={comment} key={comment.id} />
             ))}
         </div>
       )}

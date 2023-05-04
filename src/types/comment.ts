@@ -1,3 +1,7 @@
+export type Comments = Comment[];
+
+export type CommentIds = number[];
+
 export type Comment = {
   id: number;
   by: string;
@@ -5,9 +9,5 @@ export type Comment = {
   text: string;
   time: number;
   type: string;
-  kids?: number[];
+  kids?: CommentIds;
 };
-
-export type Comments = Comment[];
-
-export type CommentIds = number[];

@@ -3,7 +3,7 @@ import { Story } from "../../types/story";
 import { Card } from "antd";
 import { MOCK_DATA_LENGTH } from "../../const";
 import styles from "./StoriesList.module.scss";
-import useAppSelector from "../../hooks/useAppSelector";
+import useAppSelector from "../../hooks/use-app-selector";
 import {
   getStories,
   getStoriesError,

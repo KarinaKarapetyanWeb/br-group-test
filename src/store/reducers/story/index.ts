@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { NameSpace } from "../../../const";
-import { fetchComments, fetchFullStory, fetchInnerComments } from "./action";
+import { fetchComments, fetchFullStory } from "./action";
 import { StoryState } from "../../../types/state";
 
 const initialState: StoryState = {
@@ -10,15 +10,16 @@ const initialState: StoryState = {
   isStoryError: false,
   isCommentsLoading: false,
   isCommentsError: false,
-  innerComments: [],
-  isInnerCommentsLoading: false,
-  isInnerCommentsError: false,
 };
 
 const reducer = createSlice({
   name: NameSpace.Story,
   initialState,
-  reducers: {},
+  reducers: {
+    resetComments: (state) => {
+      state.comments = [];
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchFullStory.pending, (state) => {
@@ -44,18 +45,6 @@ const reducer = createSlice({
       .addCase(fetchComments.rejected, (state) => {
         state.isCommentsLoading = false;
         state.isCommentsError = true;
-      })
-      .addCase(fetchInnerComments.pending, (state) => {
-        state.isInnerCommentsLoading = true;
-        state.isInnerCommentsError = false;
-      })
-      .addCase(fetchInnerComments.fulfilled, (state, action) => {
-        state.innerComments = action.payload;
-        state.isInnerCommentsLoading = false;
-      })
-      .addCase(fetchInnerComments.rejected, (state) => {
-        state.isInnerCommentsLoading = false;
-        state.isInnerCommentsError = true;
       });
   },
 });

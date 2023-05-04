@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import NotFound from "../../pages/NotFound/NotFound";
-import Stories from "../../pages/Stories/Stories";
-import Story from "../../pages/Story/Story";
+import NotFound from "../../pages/not-found/not-found";
+import Stories from "../../pages/stories/stories";
+import Story from "../../pages/story/story";
 import { AppRoutes } from "../../const";
 
 interface AppRouteProps {}

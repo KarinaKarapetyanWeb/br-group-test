@@ -10,9 +10,6 @@ export type StoryState = {
   isStoryError: boolean;
   isCommentsLoading: boolean;
   isCommentsError: boolean;
-  innerComments: Comments;
-  isInnerCommentsLoading: boolean;
-  isInnerCommentsError: boolean;
 };
 
 export type StoriesState = {

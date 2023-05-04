@@ -28,3 +28,4 @@ host: http://localhost:3000.
 - redux-toolkit
 - axios
 - dayjs
+- antd

@@ -1,3 +1,7 @@
+import { CommentIds } from "./comment";
+
+export type StoryType = "story" | "comment" | "job" | "poll" | "pollopt";
+
 export type Story = {
   id: number;
   by: string;
@@ -5,7 +9,7 @@ export type Story = {
   score: number;
   time: number;
   title: string;
-  type: string;
+  type: StoryType;
   url: string;
-  kids?: number[];
+  kids?: CommentIds;
 };

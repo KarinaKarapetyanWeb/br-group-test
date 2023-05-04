@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CommentOutlined } from "@ant-design/icons";
 import { Card, Space, Button } from "antd";
 import ErrorMessage from "../Common/ErrorMessage/ErrorMessage";
 import Loader from "../Common/Loader/Loader";
-import useAppSelector from "../../hooks/useAppSelector";
+import useAppSelector from "../../hooks/use-app-selector";
 import {
   getComments,
   getCommentsLoading,
   getCommentsError,
   getStory,
 } from "../../store/reducers/story/selectors";
-import { useActions } from "../../hooks/useActions";
+import { useActions } from "../../hooks/use-actions";
 import { Comment } from "../../types/comment";
 import CommentItem from "../CommentItem/CommentItem";
 
 interface CommentsListProps {}
 
 const CommentsList: React.FunctionComponent<CommentsListProps> = () => {
-  const { fetchComments } = useActions();
-  const [activeCommentId, setActiveCommentId] = useState(0);
+  const { fetchComments, resetComments } = useActions();
   const story = useAppSelector(getStory);
   const comments = useAppSelector(getComments);
   const isCommentsLoading = useAppSelector(getCommentsLoading);
@@ -27,8 +26,12 @@ const CommentsList: React.FunctionComponent<CommentsListProps> = () => {
     !isCommentsLoading && !isCommentsError && comments.length !== 0;
 
   useEffect(() => {
-    if (story && story.kids) {
-      fetchComments(story.kids);
+    if (story) {
+      if (story.kids) {
+        fetchComments(story.kids);
+      } else {
+        resetComments();
+      }
     }
   }, [story]);
 
@@ -64,12 +67,7 @@ const CommentsList: React.FunctionComponent<CommentsListProps> = () => {
         )}
         {showComments &&
           comments.map((comment: Comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              activeCommentId={activeCommentId}
-              setActiveCommentId={setActiveCommentId}
-            />
+            <CommentItem key={comment.id} comment={comment} />
           ))}
       </Space>
     </Card>

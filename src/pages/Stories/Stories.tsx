@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { useActions } from "../../hooks/useActions";
+import { useActions } from "../../hooks/use-actions";
 import StoriesList from "../../components/StoriesList/StoriesList";
 import { REFRESH_TIMEOUT } from "../../const";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import { getStoriesLoading } from "../../store/reducers/stories/selectors";
-import useAppSelector from "../../hooks/useAppSelector";
-import styles from "./Stories.module.scss";
+import useAppSelector from "../../hooks/use-app-selector";
+import styles from "./stories.module.scss";
+
+const { Title } = Typography;
 
 interface StoriesProps {}
 
@@ -27,7 +29,9 @@ const Stories: React.FunctionComponent<StoriesProps> = () => {
   return (
     <div className="container">
       <div className={styles.wrapper}>
-        <h2>Stories</h2>
+        <Title className={styles.title} level={2}>
+          Stories
+        </Title>
         <Button
           type="primary"
           loading={isStoriesLoading}

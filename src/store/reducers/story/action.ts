@@ -3,7 +3,7 @@ import { AxiosInstance } from "axios";
 import { ApiRoute } from "../../../const";
 import { Story } from "../../../types/story";
 import { AppDispatch, State } from "../../../types/state";
-import { CommentIds, Comments } from "../../../types/comment";
+import { CommentIds, Comments, Comment } from "../../../types/comment";
 import { Result, Results } from "../../../types/result";
 
 export const fetchStory = createAsyncThunk<
@@ -58,21 +58,5 @@ export const fetchComments = createAsyncThunk<
     ids.map((id: number) => dispatch(fetchComment(id)))
   )) as Results<Comment>;
   const comments = results.map((result: Result<Comment>) => result.payload);
-  return comments as unknown as Comments;
-});
-
-export const fetchInnerComments = createAsyncThunk<
-  Comments,
-  CommentIds,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
-  }
->("story/fetchInnerComments", async (ids, { dispatch, extra: api }) => {
-  const results = (await Promise.all(
-    ids.map((id: number) => dispatch(fetchComment(id)))
-  )) as Results<Comment>;
-  const comments = results.map((result: Result<Comment>) => result.payload);
-  return comments as unknown as Comments;
+  return comments;
 });

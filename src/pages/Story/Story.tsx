@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { RollbackOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import useAppSelector from "../../hooks/useAppSelector";
+import useAppSelector from "../../hooks/use-app-selector";
 import {
   getStory,
   getStoryError,
@@ -10,8 +10,8 @@ import {
 } from "../../store/reducers/story/selectors";
 import ErrorMessage from "../../components/Common/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Common/Loader/Loader";
-import { useActions } from "../../hooks/useActions";
-import styles from "./Story.module.scss";
+import { useActions } from "../../hooks/use-actions";
+import styles from "./story.module.scss";
 import StoryInfo from "../../components/StoryInfo/StoryInfo";
 
 interface StoryProps {}
