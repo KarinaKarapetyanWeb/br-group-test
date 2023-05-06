@@ -1,30 +1,27 @@
-import React, { useEffect } from "react";
-import { useActions } from "../../hooks/use-actions";
+import React from "react";
 import StoriesList from "../../components/StoriesList/StoriesList";
-import { REFRESH_TIMEOUT } from "../../const";
 import { Button, Typography } from "antd";
-import { getStoriesLoading } from "../../store/reducers/stories/selectors";
-import useAppSelector from "../../hooks/use-app-selector";
 import styles from "./stories.module.scss";
+import { useGetAllStoriesQuery } from "../../services/newsApi";
+import { MAX_STORIES_COUNT } from "../../const";
 
 const { Title } = Typography;
 
 interface StoriesProps {}
 
 const Stories: React.FunctionComponent<StoriesProps> = () => {
-  const { fetchStories } = useActions();
+  const {
+    data: storiesIds,
+    isError,
+    isFetching,
+    refetch,
+  } = useGetAllStoriesQuery(MAX_STORIES_COUNT, {
+    pollingInterval: 60000,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
+  });
 
-  const isStoriesLoading = useAppSelector(getStoriesLoading);
-
-  useEffect(() => {
-    fetchStories();
-
-    const interval = setInterval(() => fetchStories(), REFRESH_TIMEOUT);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleRefreshBtnClick = () => fetchStories();
+  const handleRefreshBtnClick = () => refetch();
 
   return (
     <div className="container">
@@ -34,14 +31,18 @@ const Stories: React.FunctionComponent<StoriesProps> = () => {
         </Title>
         <Button
           type="primary"
-          loading={isStoriesLoading}
+          loading={isFetching}
           onClick={handleRefreshBtnClick}
         >
-          {isStoriesLoading ? "Refreshing..." : "Refresh"}
+          {isFetching ? "Refreshing..." : "Refresh"}
         </Button>
       </div>
 
-      <StoriesList />
+      <StoriesList
+        storiesIds={storiesIds}
+        isStoriesIdsLoading={isFetching}
+        isStoriesIdsError={isError}
+      />
     </div>
   );
 };

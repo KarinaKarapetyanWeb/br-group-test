@@ -1,13 +1,23 @@
-export type Comments = Comment[];
+import { itemType } from "./item";
+
+export type Comments = Partial<Comment>[];
 
 export type CommentIds = number[];
 
 export type Comment = {
   id: number;
+  deleted: boolean;
+  type: itemType;
   by: string;
-  parent: number;
-  text: string;
   time: number;
-  type: string;
-  kids?: CommentIds;
+  text: number;
+  dead: boolean;
+  parent: number;
+  poll: boolean;
+  kids: CommentIds;
+  url: string;
+  score: number;
+  title: string;
+  parts: [];
+  descendants: number;
 };

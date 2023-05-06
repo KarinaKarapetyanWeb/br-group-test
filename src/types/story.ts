@@ -1,15 +1,24 @@
 import { CommentIds } from "./comment";
-
-export type StoryType = "story" | "comment" | "job" | "poll" | "pollopt";
+import { itemType } from "./item";
 
 export type Story = {
   id: number;
+  deleted: boolean;
+  type: itemType;
   by: string;
-  descendants: number;
-  score: number;
   time: number;
-  title: string;
-  type: StoryType;
+  text: number;
+  dead: boolean;
+  parent: number;
+  poll: boolean;
+  kids: CommentIds;
   url: string;
-  kids?: CommentIds;
+  score: number;
+  title: string;
+  parts: [];
+  descendants: number;
 };
+
+export type Stories = Partial<Story>[];
+
+export type StoriesIds = number[];

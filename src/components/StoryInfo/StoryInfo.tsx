@@ -2,23 +2,25 @@ import { CalendarOutlined } from "@ant-design/icons";
 import { Card, Space, Typography } from "antd";
 import React from "react";
 import { formatDate } from "../../utils/date";
+import { Story } from "../../types/story";
 import CommentsList from "../CommentsList/CommentsList";
 import styles from "./StoryInfo.module.scss";
-import { Story } from "../../types/story";
 
 const { Title, Text, Paragraph } = Typography;
 
 interface StoryInfoProps {
-  story: Story;
+  story: Partial<Story>;
 }
 
 const StoryInfo: React.FunctionComponent<StoryInfoProps> = ({ story }) => {
   return (
     <Card
       title={
-        <Text type="secondary">
-          <CalendarOutlined /> {formatDate(story.time)}
-        </Text>
+        story.time && (
+          <Text type="secondary">
+            <CalendarOutlined /> {formatDate(story.time)}
+          </Text>
+        )
       }
       extra={
         <a href={story.url} target="_blank" rel="noopener noreferrer">
@@ -32,8 +34,9 @@ const StoryInfo: React.FunctionComponent<StoryInfoProps> = ({ story }) => {
         </Title>
         <Text italic>by {story.by}</Text>
       </Space>
-      <Paragraph>Some description is missed</Paragraph>
-      <CommentsList />
+      {story.text && <Paragraph>{story.text}</Paragraph>}
+      {!story.text && <Paragraph>Some description is missed</Paragraph>}
+      <CommentsList commentsIds={story.kids} />
     </Card>
   );
 };

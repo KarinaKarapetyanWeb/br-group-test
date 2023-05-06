@@ -1,35 +1,29 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { RollbackOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import useAppSelector from "../../hooks/use-app-selector";
-import {
-  getStory,
-  getStoryError,
-  getStoryLoading,
-} from "../../store/reducers/story/selectors";
 import ErrorMessage from "../../components/Common/ErrorMessage/ErrorMessage";
 import Loader from "../../components/Common/Loader/Loader";
-import { useActions } from "../../hooks/use-actions";
 import styles from "./story.module.scss";
 import StoryInfo from "../../components/StoryInfo/StoryInfo";
+import { useGetStoryQuery } from "../../services/newsApi";
 
 interface StoryProps {}
 
 const Story: React.FunctionComponent<StoryProps> = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { fetchFullStory } = useActions();
-  const story = useAppSelector(getStory);
-  const isStoryLoading = useAppSelector(getStoryLoading);
-  const isStoryError = useAppSelector(getStoryError);
-  const showStory = !isStoryLoading && !isStoryError && story;
 
-  useEffect(() => {
-    if (id) {
-      fetchFullStory(Number(id));
-    }
-  }, [id]);
+  const {
+    data: story,
+    isFetching: isStoryLoading,
+    isError: isStoryError,
+  } = useGetStoryQuery(Number(id) || 0, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
+
+  const showStory = !isStoryLoading && !isStoryError && story;
 
   return (
     <div className="container">
