@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Skeleton, Space, Typography } from "antd";
 import styles from "./CommentItem.module.scss";
 import ErrorMessage from "../Common/ErrorMessage/ErrorMessage";
@@ -8,10 +8,12 @@ const { Text, Paragraph, Link } = Typography;
 
 interface CommentItemProps {
   commentId: number;
+  reload: number;
 }
 
 const CommentItem: React.FunctionComponent<CommentItemProps> = ({
   commentId,
+  reload,
 }) => {
   const {
     data: comment,
@@ -30,6 +32,12 @@ const CommentItem: React.FunctionComponent<CommentItemProps> = ({
 
   const showComment =
     !isCommentLoading && !isCommentError && comment && !comment.deleted;
+
+  useEffect(() => {
+    if (reload !== 0) {
+      refetch();
+    }
+  }, [reload]);
 
   return (
     <>
@@ -69,7 +77,7 @@ const CommentItem: React.FunctionComponent<CommentItemProps> = ({
               className={styles.innerComments}
             >
               {comment.kids?.map((id: number) => (
-                <CommentItem commentId={id} key={id} />
+                <CommentItem commentId={id} key={id} reload={0} />
               ))}
             </Space>
           )}

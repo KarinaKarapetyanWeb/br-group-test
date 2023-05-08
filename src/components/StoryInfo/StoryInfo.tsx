@@ -36,7 +36,10 @@ const StoryInfo: React.FunctionComponent<StoryInfoProps> = ({ story }) => {
       </Space>
       {story.text && <Paragraph>{story.text}</Paragraph>}
       {!story.text && <Paragraph>Some description is missed</Paragraph>}
-      <CommentsList commentsIds={story.kids} />
+      <CommentsList
+        commentsIds={story.kids}
+        commentsCount={story.descendants ?? 0}
+      />
     </Card>
   );
 };

@@ -14,6 +14,7 @@ const Stories: React.FunctionComponent<StoriesProps> = () => {
     data: storiesIds,
     isError,
     isFetching,
+    isLoading,
     refetch,
   } = useGetAllStoriesQuery(MAX_STORIES_COUNT, {
     pollingInterval: 60000,
@@ -40,7 +41,8 @@ const Stories: React.FunctionComponent<StoriesProps> = () => {
 
       <StoriesList
         storiesIds={storiesIds}
-        isStoriesIdsLoading={isFetching}
+        isStoriesIdsLoading={isLoading}
+        isStoriesIdsReloading={isFetching}
         isStoriesIdsError={isError}
       />
     </div>
