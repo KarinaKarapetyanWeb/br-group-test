@@ -1,11 +1,11 @@
+import { Action, ThunkAction } from "@reduxjs/toolkit";
 import { store } from "../store/index.js";
 import { Comments } from "./comment.js";
-import { Stories } from "./stories.js";
-import { Story } from "./story.js";
+import { Story, StoriesIds } from "./story.js";
 
 export type StoryState = {
-  story: Story | null;
-  comments: Comments;
+  story: Partial<Story> | null;
+  comments: Partial<Comments>;
   isStoryLoading: boolean;
   isStoryError: boolean;
   isCommentsLoading: boolean;
@@ -13,7 +13,7 @@ export type StoryState = {
 };
 
 export type StoriesState = {
-  stories: Stories;
+  storiesIds: StoriesIds;
   isStoriesLoading: boolean;
   isStoriesError: boolean;
 };
@@ -21,3 +21,10 @@ export type StoriesState = {
 export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  State,
+  unknown,
+  Action<string>
+>;
